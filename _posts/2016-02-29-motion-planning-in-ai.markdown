@@ -11,6 +11,7 @@ The key question lies:
 How do these automated agents plan its motion in the midst of the ever-changing environment?
 
 In order to do so, there is a need to understand the following:
+
 1. How can the environment be modeled
 	- needs to be efficient (real-time computation)
 	- accuracy of its representation
