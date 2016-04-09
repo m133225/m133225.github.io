@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Quadrotor, and its physics, PART 1"
-date:   2016-03-30 20:30:00 +0800
+date:   2016-04-05 20:30:00 +0800
 categories: quadrotor, quadcopter
 ---
 
