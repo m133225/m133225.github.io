@@ -22,10 +22,12 @@ a<sub>cm</sub> is the acceleration of the center of mass
 
 __Equilibrium__
 We are particularly concerned with the equilibrium state for quadcopters (duh!). An equilibrium state can be:
+
 - Stable
 - Unstable
 - Critically stable
 
 By using the following representations, we are able to calculate if a body is in equilibrium or not:
+
 - q, the configuration/position of the system
 - x, the state of the system
