@@ -6,8 +6,8 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Apr 2016 14:28:16 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Apr 2016 14:28:16 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Apr 2016 15:09:08 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Apr 2016 15:09:08 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -15,22 +15,19 @@
         <description>&lt;p&gt;So far, we have discussed the basic idea behind motion planning.
 But the environment is constantly changing, and always has its uncertainty. How do we account these uncertainties into our planning?&lt;/p&gt;
 
-&lt;p&gt;In general, we can model the movement of a robot in the following cycle:
-1. The robot moves. This increases the uncertainty of the environment.
-2. Using the movement (control input) in step 1, predict the new environment.
-3. Use sensors to gather information about the new environment
-4. Using the new information, update the model of the new environment, which reduces the uncertainty (then go back to (1))&lt;/p&gt;
+&lt;p&gt;In general, we can model the movement of a robot in the following cycle:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The robot moves. This increases the uncertainty of the environment.&lt;/li&gt;
+  &lt;li&gt;Using the movement (control input) in step 1, predict the new environment.&lt;/li&gt;
+  &lt;li&gt;Use sensors to gather information about the new environment&lt;/li&gt;
+  &lt;li&gt;Using the new information, update the model of the new environment, which reduces the uncertainty (then go back to (1))&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;Without covering on the different types of probability (that were covered in the slides), let’s move on directly to the solution: Bayes’ Filter, also known as &lt;a href=&quot;https://en.wikipedia.org/wiki/Recursive_Bayesian_estimation&quot;&gt;Recursive Bayesian estimation&lt;/a&gt;.&lt;/p&gt;
 
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Bayes’ Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment. i.e. P(x&lt;sub&gt;t&lt;/sub&gt;&lt;/td&gt;
-      &lt;td&gt;z&lt;sub&gt;1:t&lt;/sub&gt;, u&lt;sub&gt;1:t&lt;/sub&gt;) where x&lt;sub&gt;t&lt;/sub&gt; is the new environment.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;Bayes’ Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment.
+i.e. p(x&lt;sub&gt;t&lt;/sub&gt;| z&lt;sub&gt;1:t&lt;/sub&gt;, u&lt;sub&gt;1:t&lt;/sub&gt;) where x&lt;sub&gt;t&lt;/sub&gt; is the new environment.&lt;/p&gt;
 
 &lt;p&gt;If you would like a more detailed explanation with concrete examples, click &lt;a href=&quot;http://people.ufpr.br/~danielsantos/ProbabilisticRobotics.pdf&quot;&gt;here&lt;/a&gt; and start from page 23!&lt;/p&gt;
 
@@ -74,7 +71,7 @@ This is known as the Curse of Dimensionality.&lt;/p&gt;
 
 &lt;p&gt;Let’s look at a slightly different problem.
 Instead of trying to make Robot A move to goal A and Robot B move to goal B and so on, we allow the robots to move to any of the goal, as long as all goals are visited.
-We call this problem CAPT - Concurrent Assignment and Planning of Trajectories.
+We call this problem &lt;strong&gt;CAPT - Concurrent Assignment and Planning of Trajectories&lt;/strong&gt;.
 However, there is the problem of intersecting paths, which may result in collision.&lt;/p&gt;
 
 &lt;p&gt;There is a theorem to help us: Minimizing total distance will almost always result in non-intersecting paths.
@@ -82,18 +79,24 @@ So basically, we can minimize total distance in order to get a set of paths.
 This is rather straight-forward: we emulate a table with the distance of each robot to the different goals. We then attempt to find an assignment such that it minimizes the total distance travelled. For this, we can use the &lt;a href=&quot;https://en.wikipedia.org/wiki/Hungarian_algorithm&quot;&gt;Hungarian algorithm&lt;/a&gt; which has a O(n&lt;sup&gt;3&lt;/sup&gt;) running time.&lt;/p&gt;
 
 &lt;p&gt;However, if we add in an assumption, we can ensure that it will result in non-intersecting paths.
-Assume that the distance between the starting points and the goal is &amp;gt; 2 x R x sqrt(2)where R is the radius of the (circular) robot.&lt;/p&gt;
+Assume that the distance between the starting points and the goal is larger than 2 x R x sqrt(2), where R is the radius of the (circular) robot.&lt;/p&gt;
 
 &lt;p&gt;However, when we add in obstacles, the above assumption will not hold. With intersecting paths, we then have to determine the priority order.
-This can be done by checking if there will still be intersection between 2 robots if one of them does not move.
-- If there is still intersecting paths, then the one that did not move will have a higher priority.
-- If not, checking if there is still intersecting paths if the one that didn’t move now moves (and completes) its path first. If there is, then the other one will have higher priority.&lt;/p&gt;
+This can be done by checking if there will still be intersection between 2 robots if one of them does not move.&lt;/p&gt;
 
-&lt;p&gt;Let’s summarize the above in simple steps for multi-agent planning:
-1. Compute the shortest length paths (squared) from the robots to every goal
-2. Find the best assignment using Hungarian algorithm
-3. Determine the priority of intersecting paths.
-4. Even after delegating the paths to the robots, it is still up to the robots to optimize its own trajectory to ensure that its path is safe &amp;amp; does not interfere with higher-priority robots.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;If there is still intersecting paths, then the one that did not move will have a higher priority.&lt;/li&gt;
+  &lt;li&gt;If not, checking if there is still intersecting paths if the one that didn’t move now moves (and completes) its path first. If there is, then the other one will have higher priority.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s summarize the above in simple steps for multi-agent planning:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Compute the shortest length paths (squared) from the robots to every goal&lt;/li&gt;
+  &lt;li&gt;Find the best assignment using Hungarian algorithm&lt;/li&gt;
+  &lt;li&gt;Determine the priority of intersecting paths.&lt;/li&gt;
+  &lt;li&gt;Even after delegating the paths to the robots, it is still up to the robots to optimize its own trajectory to ensure that its path is safe &amp;amp; does not interfere with higher-priority robots.&lt;/li&gt;
+&lt;/ol&gt;
 </description>
         <pubDate>Sat, 16 Apr 2016 20:00:00 +0800</pubDate>
         <link>/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html</link>
@@ -121,21 +124,42 @@ This can be done by checking if there will still be intersection between 2 robot
 &lt;p&gt;So how do we model a 2D space?
 The main technique commonly used is &lt;strong&gt;cellular decomposition&lt;/strong&gt;.
 In other words, break down the space into cells (or grids).
-Doing this will result in 3 types of cells:
-- Completely blocked
-  - Basically, obstacle occupied the whole cell
-- Partially blocked
-  - Cell is half-occupied by an obstacle
-- Empty
-  - No obstruction&lt;/p&gt;
+Doing this will result in 3 types of cells:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Completely blocked
+    &lt;ul&gt;
+      &lt;li&gt;Basically, obstacle occupies the whole cell&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Partially blocked
+    &lt;ul&gt;
+      &lt;li&gt;Cell is half-occupied by an obstacle&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Empty
+    &lt;ul&gt;
+      &lt;li&gt;No obstruction&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;Completely blocked cells and empty cells are rather straight-forward: allow/disallow traversals.
 But what about partially blocked cells?
-There are pros and cons of the different ways of handling them.
-1. We make them traversable
-  - obviously, this may not work since there is an obstacle
-2. We make them not traversable
-  - this may lead to incomplete search&lt;/p&gt;
+There are pros and cons of the different ways of handling them.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We make them traversable
+    &lt;ul&gt;
+      &lt;li&gt;obviously, this may not work since there is an obstacle&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We make them not traversable
+    &lt;ul&gt;
+      &lt;li&gt;this may lead to incomplete search&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;Also, we can always increase the &lt;em&gt;resolution&lt;/em&gt; of the grids i.e. decompose each cell into even smaller cells
 -&amp;gt; but this requires additional memory and computation, which may not always be feasible.&lt;/p&gt;
@@ -186,14 +210,20 @@ a&lt;sub&gt;cm&lt;/sub&gt; is the acceleration of the center of mass
 ω is the angular velocity of the rigid body&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Equilibrium&lt;/strong&gt;
-We are particularly concerned with the equilibrium state for quadcopters (duh!). An equilibrium state can be:
-- Stable
-- Unstable
-- Critically stable&lt;/p&gt;
+We are particularly concerned with the equilibrium state for quadcopters (duh!). An equilibrium state can be:&lt;/p&gt;
 
-&lt;p&gt;By using the following representations, we are able to calculate if a body is in equilibrium or not:
-- q, the configuration/position of the system
-- x, the state of the system&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Stable&lt;/li&gt;
+  &lt;li&gt;Unstable&lt;/li&gt;
+  &lt;li&gt;Critically stable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;By using the following representations, we are able to calculate if a body is in equilibrium or not:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;q, the configuration/position of the system&lt;/li&gt;
+  &lt;li&gt;x, the state of the system&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Sat, 09 Apr 2016 16:30:00 +0800</pubDate>
         <link>/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</link>
@@ -210,13 +240,13 @@ We are particularly concerned with the equilibrium state for quadcopters (duh!).
         <title>Quadrotor, and its physics, PART 1</title>
         <description>&lt;p&gt;Now that we have looked at basic representations of the 3D space, we can move on to something more complex: the physics of quadcopters.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Newton-Euler Equations&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;Newton-Euler Equations&lt;/strong&gt;&lt;br /&gt;
 Newton-Euler equations are an extension of Euler’s law of motions, which are in turn extensions of Newton’s law of motion. They are ways to represent the translations and rotations of a rigid body.&lt;/p&gt;
 
 &lt;p&gt;So let’s start with Euler’s law of motion since Newton’s law of motion should be familiar to most science students. (not me, however).&lt;/p&gt;
 
 &lt;p&gt;First off, let’s begin with &lt;strong&gt;Euler’s first law&lt;/strong&gt;.
-It states that the linear momentum of a body is equal to mass of the body times the velocity of the body’s center of the mass.
+It states that the linear momentum of a body is equal to mass of the body times the velocity of the body’s center of the mass.&lt;br /&gt;
 In order words:&lt;br /&gt;
 p = mv&lt;sub&gt;cm&lt;/sub&gt;&lt;br /&gt;
 where p is the linear momentum of a body, m is the mass of the body, v&lt;sub&gt;cm&lt;/sub&gt; is the velocity of the body’s center of the mass.&lt;/p&gt;
@@ -225,11 +255,11 @@ where p is the linear momentum of a body, m is the mass of the body, v&lt;sub&gt
 It states that the rate of change of the angular momentum at a point is equal to the sum of external moments of force acting on the body:&lt;br /&gt;
 M = dL/dt&lt;/p&gt;
 
-&lt;p&gt;Newton-Euler equations also make use of principal axes and moments.
-&lt;strong&gt;Principal axis of inertia&lt;/strong&gt;
--&amp;gt; a vector u is considered to be along a principal axis if Iu is parallel to u, where I is the inertia of the rigid body&lt;br /&gt;
-&lt;strong&gt;Principal moment of inertia&lt;/strong&gt;
--&amp;gt; moment of inertia with respect to a principle axis is called a principal moment of inertia&lt;/p&gt;
+&lt;p&gt;Newton-Euler equations also make use of principal axes and moments.&lt;br /&gt;
+&lt;strong&gt;Principal axis of inertia&lt;/strong&gt;&lt;br /&gt;
+- a vector u is considered to be along a principal axis if Iu is parallel to u, where I is the inertia of the rigid body&lt;br /&gt;
+&lt;strong&gt;Principal moment of inertia&lt;/strong&gt;&lt;br /&gt;
+- moment of inertia with respect to a principle axis is called a principal moment of inertia&lt;/p&gt;
 
 &lt;p&gt;That’s all the physics to read through for now. In the next post, we will be looking at how to combine these laws into Newton-Euler equations.&lt;/p&gt;
 </description>
@@ -251,48 +281,62 @@ M = dL/dt&lt;/p&gt;
 &lt;p&gt;In this post, I will be comparing the processes between my projects and extract out the good points.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;HubTurbo&lt;/strong&gt;&lt;br /&gt;
-&lt;em&gt;Setting up&lt;/em&gt;
-Setting up of HubTurbo is rather straight-forward.
+&lt;em&gt;Setting up&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Setting up of HubTurbo is rather straight-forward.
 There are step-by-step instructions available in the repository.&lt;/p&gt;
 
 &lt;p&gt;However, if there are bugs, the new contributor might become helpless since he or she might not have the technological expertise to do it in the first place.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Contributing to HubTurbo&lt;/em&gt;
-1. First off, new contributors are required to submit a &lt;code class=&quot;highlighter-rouge&quot;&gt;forFirstTimers&lt;/code&gt; issue to make sure they know the basic contribution workflow. This usually involves 1-line changes (or even 1-word changes!).
-2. Contributors are usually free to choose their subsequent issues. However, they are usually recommended to avoid making new suggestions until they are familiar with several aspects of the project.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Contributing to HubTurbo&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;
-HubTurbo has a rather flexible issue reporting workflow. Whenever a developer or an user has found an issue, he or she is free to create the issue. It is up to the developers to accept or reject the issue, but they are usually accepted as long as they are reasonable. Of course, it is still encouraged that the person who reports the issue to comprehensive;y address the issue.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;First off, new contributors are required to submit a &lt;code class=&quot;highlighter-rouge&quot;&gt;forFirstTimers&lt;/code&gt; issue to make sure they know the basic contribution workflow. This usually involves 1-line changes (or even 1-word changes!).&lt;/li&gt;
+  &lt;li&gt;Contributors are usually free to choose their subsequent issues. However, they are usually recommended to avoid making new suggestions until they are familiar with several aspects of the project.&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;
-1. Before submitting PRs, HubTurbo encourages the contributor to read through the contribution guidelines, to make sure they know of the coding style &amp;amp; testing requirements.
-2. It is also usually a requirement that PRs do not decrease test coverage, unless there are valid reasons.
-3. During its active periods, there will be weekly releases, in addition to weekly meetings to discuss the problems encountered and the direction that HubTurbo should go towards. Each active member is also required to submit at least one PR for each release (preferably more).
-4. Due to the weekly releases, its developers are rather active, and PRs submitted will usually be attended to or reviewed quickly.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;HubTurbo has a rather flexible issue reporting workflow. Whenever a developer or an user has found an issue, he or she is free to create the issue. It is up to the developers to accept or reject the issue, but they are usually accepted as long as they are reasonable. Of course, it is still encouraged that the person who reports the issue to comprehensive;y address the issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Before submitting PRs, HubTurbo encourages the contributor to read through the contribution guidelines, to make sure they know of the coding style &amp;amp; testing requirements.&lt;/li&gt;
+  &lt;li&gt;It is also usually a requirement that PRs do not decrease test coverage, unless there are valid reasons.&lt;/li&gt;
+  &lt;li&gt;During its active periods, there will be weekly releases, in addition to weekly meetings to discuss the problems encountered and the direction that HubTurbo should go towards. Each active member is also required to submit at least one PR for each release (preferably more).&lt;/li&gt;
+  &lt;li&gt;Due to the weekly releases, its developers are rather active, and PRs submitted will usually be attended to or reviewed quickly.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;&lt;strong&gt;Atom&lt;/strong&gt;&lt;br /&gt;
-&lt;em&gt;Setting up&lt;/em&gt;
-Instruction for setting up atom may not be that obvious to a new contributor:
+&lt;em&gt;Setting up&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Instruction for setting up atom may not be that obvious to a new contributor:
 Key instructions are found &lt;a href=&quot;http://flight-manual.atom.io/getting-started/sections/installing-atom/&quot;&gt;here&lt;/a&gt; instead of the contribution guidelines of the repository.&lt;/p&gt;
 
 &lt;p&gt;Moreover, since atom is modularized, the user may not know how to set-up the repository he wishes to contribute to.
 For example, the user wishes to contribute to the tree-view package but simply cloning it will not suffice. The user has to link the cloned repo to the main repo, so the main repo will include the package during its run. This is indicated &lt;a href=&quot;https://github.com/atom/atom/blob/master/docs/contributing-to-packages.md&quot;&gt;here&lt;/a&gt; which is not that obvious to a new user since it is not linked from anywhere.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Contributing to Atom&lt;/em&gt;
-It is rather similar to HubTurbo process in the aspect of coding styles guidelines (for CoffeeScript/Javascript/CSS).&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Contributing to Atom&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;It is rather similar to HubTurbo process in the aspect of coding styles guidelines (for CoffeeScript/Javascript/CSS).&lt;/p&gt;
 
 &lt;p&gt;There is a minor difference: While atom has &lt;code class=&quot;highlighter-rouge&quot;&gt;beginner&lt;/code&gt; issues, contributors are NOT required to submit a &lt;code class=&quot;highlighter-rouge&quot;&gt;beginner&lt;/code&gt; issue before going on to more complicated ones.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;
-Atom, however, has a good process for reporting issues. They have a structured checklist to minimize already-reported issues and encourages the users who report to include reproduction steps. Of course, this isn’t always possible.
+&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Atom, however, has a good process for reporting issues. They have a structured checklist to minimize already-reported issues and encourages the users who report to include reproduction steps. Of course, this isn’t always possible.
 This checklist includes stuff like the OS information, atom version, whether the problem is reproducible in atom safe mode, whether the user has went through the existing list of issues, and so on.
 This is a process that may take up a significant time if a user wants to report an issue, which may in turn frustrate the user till he or she no longer wants to make an issue. While it may be so, it is still a good form of documentation so that contributors can ensure that they have a good overview of the problem. In addition, if the user ‘gives up’ reporting that easily, maybe he or she won’t make a comprehensive issue anyway :p&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;
-1. Similarly to HubTurbo, atom encourages the contributor to read through the contribution guidelines.
-2. The only requirement before a PR can be merged is that it compiles on Travis/AppVeyor. Whether a PR decreases its test coverage does not matter, and is entirely up to the developer reviewing the PR.
-3. Unlike HubTurbo, it does not have scheduled releases. It is up to the developers to merge a couple of PRs, then ‘release’ them as a new minor version. (e.g. 1.7.0-beta2) The duration for a minor version ranges from a few hours to a few days.
-4. However, there are many lingering PRs that &lt;code class=&quot;highlighter-rouge&quot;&gt;needs-review&lt;/code&gt; but are not looked at even after the contributor has addressed the problems identified. (There are even 2 year-old PRs!) This could be due to the lack of developers, and they can only address problems that are of high priority.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Similarly to HubTurbo, atom encourages the contributor to read through the contribution guidelines.&lt;/li&gt;
+  &lt;li&gt;The only requirement before a PR can be merged is that it compiles on Travis/AppVeyor. Whether a PR decreases its test coverage does not matter, and is entirely up to the developer reviewing the PR.&lt;/li&gt;
+  &lt;li&gt;Unlike HubTurbo, it does not have scheduled releases. It is up to the developers to merge a couple of PRs, then ‘release’ them as a new minor version. (e.g. 1.7.0-beta2) The duration for a minor version ranges from a few hours to a few days.&lt;/li&gt;
+  &lt;li&gt;However, there are many lingering PRs that &lt;code class=&quot;highlighter-rouge&quot;&gt;needs-review&lt;/code&gt; but are not looked at even after the contributor has addressed the problems identified. (There are even 2 year-old PRs!) This could be due to the lack of developers, and they can only address problems that are of high priority.&lt;/li&gt;
+&lt;/ol&gt;
 </description>
         <pubDate>Thu, 31 Mar 2016 12:00:00 +0800</pubDate>
         <link>/process/2016/03/31/process-comparison.html</link>
@@ -305,9 +349,10 @@ This is a process that may take up a significant time if a user wants to report 
     
       <item>
         <title>Rotations, and how they are represented</title>
-        <description>&lt;p&gt;So let’s move on to rotations.
-***
-There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also known as the &lt;em&gt;lie&lt;/em&gt; group.&lt;/p&gt;
+        <description>&lt;p&gt;So let’s move on to rotations.&lt;/p&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also known as the &lt;em&gt;lie&lt;/em&gt; group.&lt;/p&gt;
 
 &lt;p&gt;There are several representations for these group of rotations which we will be discussing later on.&lt;/p&gt;
 
@@ -317,13 +362,19 @@ There is a group of rotations, called Special Orthogonal group SO(n) where n is 
 So what are &lt;em&gt;smooth manifolds&lt;/em&gt;?&lt;br /&gt;
 First, let’s look at the ideas of &lt;em&gt;homeomorphism&lt;/em&gt; and &lt;em&gt;diffeomorphism&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;Basically, &lt;em&gt;homeomorphism&lt;/em&gt; is a function that maps one topological space to another, with the following properties:
-- Bijection
-- f and f&lt;sup&gt;-1&lt;/sup&gt; are both continuous&lt;/p&gt;
+&lt;p&gt;Basically, &lt;em&gt;homeomorphism&lt;/em&gt; is a function that maps one topological space to another, with the following properties:&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Diffeomorphism&lt;/em&gt;, on the other hand, is a function f, together with its inverse f&lt;sup&gt;-1&lt;/sup&gt;,
-- has all partial derivatives, of all orders
-- which all partial derivatives are continuous&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Bijection&lt;/li&gt;
+  &lt;li&gt;f and f&lt;sup&gt;-1&lt;/sup&gt; are both continuous&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Diffeomorphism&lt;/em&gt;, on the other hand, is a function f, together with its inverse f&lt;sup&gt;-1&lt;/sup&gt;,&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;has all partial derivatives, of all orders&lt;/li&gt;
+  &lt;li&gt;which all partial derivatives are continuous&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;So, then, a &lt;em&gt;manifold&lt;/em&gt; (of dimension n) is a set M which is homeomorphic to R&lt;sup&gt;n&lt;/sup&gt;.
 For it to be a &lt;em&gt;smooth manifold&lt;/em&gt;, it should ALSO be &lt;em&gt;locally diffeomorphic&lt;/em&gt; to R&lt;sup&gt;n&lt;/sup&gt;&lt;/p&gt;

@@ -8,6 +8,7 @@ So far, we have discussed the basic idea behind motion planning.
 But the environment is constantly changing, and always has its uncertainty. How do we account these uncertainties into our planning?
 
 In general, we can model the movement of a robot in the following cycle:
+
 1. The robot moves. This increases the uncertainty of the environment.
 2. Using the movement (control input) in step 1, predict the new environment.
 3. Use sensors to gather information about the new environment
@@ -15,7 +16,8 @@ In general, we can model the movement of a robot in the following cycle:
 
 Without covering on the different types of probability (that were covered in the slides), let's move on directly to the solution: Bayes' Filter, also known as [Recursive Bayesian estimation](https://en.wikipedia.org/wiki/Recursive_Bayesian_estimation).
 
-Bayes' Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment. i.e. P(x<sub>t</sub>|z<sub>1:t</sub>, u<sub>1:t</sub>) where x<sub>t</sub> is the new environment.
+Bayes' Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment.
+i.e. p(x<sub>t</sub>| z<sub>1:t</sub>, u<sub>1:t</sub>) where x<sub>t</sub> is the new environment.
 
 If you would like a more detailed explanation with concrete examples, click [here](http://people.ufpr.br/~danielsantos/ProbabilisticRobotics.pdf) and start from page 23!
 

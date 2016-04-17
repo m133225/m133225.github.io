@@ -73,21 +73,42 @@
 <p>So how do we model a 2D space?
 The main technique commonly used is <strong>cellular decomposition</strong>.
 In other words, break down the space into cells (or grids).
-Doing this will result in 3 types of cells:
-- Completely blocked
-  - Basically, obstacle occupied the whole cell
-- Partially blocked
-  - Cell is half-occupied by an obstacle
-- Empty
-  - No obstruction</p>
+Doing this will result in 3 types of cells:</p>
+
+<ul>
+  <li>Completely blocked
+    <ul>
+      <li>Basically, obstacle occupies the whole cell</li>
+    </ul>
+  </li>
+  <li>Partially blocked
+    <ul>
+      <li>Cell is half-occupied by an obstacle</li>
+    </ul>
+  </li>
+  <li>Empty
+    <ul>
+      <li>No obstruction</li>
+    </ul>
+  </li>
+</ul>
 
 <p>Completely blocked cells and empty cells are rather straight-forward: allow/disallow traversals.
 But what about partially blocked cells?
-There are pros and cons of the different ways of handling them.
-1. We make them traversable
-  - obviously, this may not work since there is an obstacle
-2. We make them not traversable
-  - this may lead to incomplete search</p>
+There are pros and cons of the different ways of handling them.</p>
+
+<ol>
+  <li>We make them traversable
+    <ul>
+      <li>obviously, this may not work since there is an obstacle</li>
+    </ul>
+  </li>
+  <li>We make them not traversable
+    <ul>
+      <li>this may lead to incomplete search</li>
+    </ul>
+  </li>
+</ol>
 
 <p>Also, we can always increase the <em>resolution</em> of the grids i.e. decompose each cell into even smaller cells
 -&gt; but this requires additional memory and computation, which may not always be feasible.</p>
