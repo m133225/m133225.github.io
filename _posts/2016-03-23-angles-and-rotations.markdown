@@ -5,7 +5,7 @@ date:   2016-03-23 11:49:00 +0800
 categories: matrices, rotations
 ---
 So let's move on to rotations.
-***
+<hr/>
 There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also known as the _lie_ group.
 
 There are several representations for these group of rotations which we will be discussing later on.
@@ -17,10 +17,12 @@ So what are _smooth manifolds_?
 First, let's look at the ideas of _homeomorphism_ and _diffeomorphism_.  
 
 Basically, _homeomorphism_ is a function that maps one topological space to another, with the following properties:
+
 - Bijection
 - f and f<sup>-1</sup> are both continuous
 
 _Diffeomorphism_, on the other hand, is a function f, together with its inverse f<sup>-1</sup>,
+
 - has all partial derivatives, of all orders
 - which all partial derivatives are continuous
 
