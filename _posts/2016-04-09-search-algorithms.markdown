@@ -16,8 +16,9 @@ So how do we model a 2D space?
 The main technique commonly used is __cellular decomposition__.
 In other words, break down the space into cells (or grids).
 Doing this will result in 3 types of cells:
+
 - Completely blocked
-  - Basically, obstacle occupied the whole cell
+  - Basically, obstacle occupies the whole cell
 - Partially blocked
   - Cell is half-occupied by an obstacle
 - Empty
@@ -26,6 +27,7 @@ Doing this will result in 3 types of cells:
 Completely blocked cells and empty cells are rather straight-forward: allow/disallow traversals.
 But what about partially blocked cells?
 There are pros and cons of the different ways of handling them.
+
 1. We make them traversable
   - obviously, this may not work since there is an obstacle
 2. We make them not traversable
