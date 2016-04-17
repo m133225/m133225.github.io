@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Motion Planning for Multi-robot"
-date:   2016-04-06 20:00:00 +0800
+date:   2016-04-16 20:00:00 +0800
 categories: algorithms, A*, multi-agent
 ---
 In the previous post, we only discussed about the search for a single-agent.
