@@ -6,13 +6,13 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: m133225's journey in HubTurbo
+title: m133225's blog
 email: a0132760@u.nus.edu
 description: > # this means to ignore newlines until "baseurl:"
-  CS3281 Blog for HubTurbo
+  Blog about technology that I am interested in, mainly related to AI and working in open-sourced projects.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
-twitter_username: m133225 
+twitter_username: m133225
 github_username:  m133225
 
 # Build settings

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>m133225&#39;s journey in HubTurbo</title>
-    <description>CS3281 Blog for HubTurbo
+    <title>m133225&#39;s blog</title>
+    <description>Blog about technology that I am interested in, mainly related to AI and working in open-sourced projects.
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Apr 2016 15:09:08 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Apr 2016 15:09:08 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Apr 2016 15:15:49 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Apr 2016 15:15:49 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -46,11 +46,11 @@ Prediction = integral of p(x&lt;sub&gt;t&lt;/sub&gt;|x&lt;sub&gt;t-1&lt;/sub&gt;
 p(x&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t&lt;/sub&gt;, u&lt;sub&gt;1:t&lt;/sub&gt;) = g(z&lt;sub&gt;t&lt;/sub&gt;|x&lt;sub&gt;t&lt;/sub&gt;)p(x&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t-1&lt;/sub&gt;,u&lt;sub&gt;1:t&lt;/sub&gt;)/integral(g(z&lt;sub&gt;t&lt;/sub&gt;|x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;)p(x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t-1&lt;/sub&gt;,u&lt;sub&gt;1:t&lt;/sub&gt;))d(x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;)&lt;/p&gt;
 </description>
         <pubDate>Sun, 17 Apr 2016 12:00:00 +0800</pubDate>
-        <link>/probability,/uncertainty/2016/04/17/handling-uncertainty.html</link>
-        <guid isPermaLink="true">/probability,/uncertainty/2016/04/17/handling-uncertainty.html</guid>
+        <link>/probability/uncertainty/2016/04/17/handling-uncertainty.html</link>
+        <guid isPermaLink="true">/probability/uncertainty/2016/04/17/handling-uncertainty.html</guid>
         
         
-        <category>probability,</category>
+        <category>probability</category>
         
         <category>uncertainty</category>
         
@@ -99,13 +99,13 @@ This can be done by checking if there will still be intersection between 2 robot
 &lt;/ol&gt;
 </description>
         <pubDate>Sat, 16 Apr 2016 20:00:00 +0800</pubDate>
-        <link>/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html</link>
-        <guid isPermaLink="true">/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html</guid>
+        <link>/algorithms/a*/multi-agent/2016/04/16/multi-robot-planning.html</link>
+        <guid isPermaLink="true">/algorithms/a*/multi-agent/2016/04/16/multi-robot-planning.html</guid>
         
         
-        <category>algorithms,</category>
+        <category>algorithms</category>
         
-        <category>A*,</category>
+        <category>A*</category>
         
         <category>multi-agent</category>
         
@@ -179,13 +179,13 @@ It works similarly to A*, except that it avoids checking for symmetrical paths. 
 &lt;p&gt;Note that it can perform more than 10x the speed of A*!&lt;/p&gt;
 </description>
         <pubDate>Sat, 09 Apr 2016 20:30:00 +0800</pubDate>
-        <link>/algorithms,/a*,/jps/2016/04/09/search-algorithms.html</link>
-        <guid isPermaLink="true">/algorithms,/a*,/jps/2016/04/09/search-algorithms.html</guid>
+        <link>/algorithms/a*/jps/2016/04/09/search-algorithms.html</link>
+        <guid isPermaLink="true">/algorithms/a*/jps/2016/04/09/search-algorithms.html</guid>
         
         
-        <category>algorithms,</category>
+        <category>algorithms</category>
         
-        <category>A*,</category>
+        <category>A*</category>
         
         <category>JPS</category>
         
@@ -226,11 +226,11 @@ We are particularly concerned with the equilibrium state for quadcopters (duh!).
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 09 Apr 2016 16:30:00 +0800</pubDate>
-        <link>/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</link>
-        <guid isPermaLink="true">/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</guid>
+        <link>/quadrotor/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</link>
+        <guid isPermaLink="true">/quadrotor/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</guid>
         
         
-        <category>quadrotor,</category>
+        <category>quadrotor</category>
         
         <category>quadcopter</category>
         
@@ -264,11 +264,11 @@ M = dL/dt&lt;/p&gt;
 &lt;p&gt;That’s all the physics to read through for now. In the next post, we will be looking at how to combine these laws into Newton-Euler equations.&lt;/p&gt;
 </description>
         <pubDate>Tue, 05 Apr 2016 20:30:00 +0800</pubDate>
-        <link>/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</link>
-        <guid isPermaLink="true">/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</guid>
+        <link>/quadrotor/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</link>
+        <guid isPermaLink="true">/quadrotor/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</guid>
         
         
-        <category>quadrotor,</category>
+        <category>quadrotor</category>
         
         <category>quadcopter</category>
         
@@ -397,11 +397,11 @@ The Euler’s Rotation Theorem&lt;br /&gt;
 where u is the unit vector of the rotation axis, and 𝜙 is the angle rotated according to the right hand rule.&lt;/p&gt;
 </description>
         <pubDate>Wed, 23 Mar 2016 11:49:00 +0800</pubDate>
-        <link>/matrices,/rotations/2016/03/23/angles-and-rotations.html</link>
-        <guid isPermaLink="true">/matrices,/rotations/2016/03/23/angles-and-rotations.html</guid>
+        <link>/matrices/rotations/2016/03/23/angles-and-rotations.html</link>
+        <guid isPermaLink="true">/matrices/rotations/2016/03/23/angles-and-rotations.html</guid>
         
         
-        <category>matrices,</category>
+        <category>matrices</category>
         
         <category>rotations</category>
         
@@ -493,11 +493,11 @@ where R is the rotational matrix, and d is the displacement matrix&lt;/li&gt;
 &lt;p&gt;It seems like we will be another 3 topics related to the physics/math side of it, before we move on to the actual motion planning itself. So brace yourselves :D&lt;/p&gt;
 </description>
         <pubDate>Mon, 21 Mar 2016 01:00:00 +0800</pubDate>
-        <link>/matrices,/transformations/2016/03/21/configuration-space.html</link>
-        <guid isPermaLink="true">/matrices,/transformations/2016/03/21/configuration-space.html</guid>
+        <link>/matrices/transformations/2016/03/21/configuration-space.html</link>
+        <guid isPermaLink="true">/matrices/transformations/2016/03/21/configuration-space.html</guid>
         
         
-        <category>matrices,</category>
+        <category>matrices</category>
         
         <category>transformations</category>
         

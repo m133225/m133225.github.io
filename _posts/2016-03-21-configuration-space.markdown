@@ -2,7 +2,7 @@
 layout: post
 title:  "Useful tools for manipulating space representations"
 date:   2016-03-21 01:00:00 +0800
-categories: matrices, transformations
+categories: matrices transformations
 ---
 Just some additional background info (of me), I have learnt some Machine Learning algorithms, and am currently taking an
 Introduction to Artificial Intelligence module. With interest in Motion Planning and Robotics, this is an exploration

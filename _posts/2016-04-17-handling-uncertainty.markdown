@@ -2,7 +2,7 @@
 layout: post
 title:  "Dealing with uncertainty"
 date:   2016-04-17 12:00:00 +0800
-categories: probability, uncertainty
+categories: probability uncertainty
 ---
 So far, we have discussed the basic idea behind motion planning.
 But the environment is constantly changing, and always has its uncertainty. How do we account these uncertainties into our planning?

@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's blog</title>
-  <meta name="description" content="Blog about technology that I am interested in, mainly related to AI and working in open-sourced projects.
-">
+  <title>Quadrotor, and its physics, PART 1</title>
+  <meta name="description" content="Now that we have looked at basic representations of the 3D space, we can move on to something more complex: the physics of quadcopters.">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/quadrotor/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's blog" href="/feed.xml">
 </head>
 
@@ -55,89 +54,42 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Quadrotor, and its physics, PART 1</h1>
+    <p class="post-meta"><time datetime="2016-04-05T20:30:00+08:00" itemprop="datePublished">Apr 5, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>Now that we have looked at basic representations of the 3D space, we can move on to something more complex: the physics of quadcopters.</p>
 
-        <h2>
-          <a class="post-link" href="/probability/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p><strong>Newton-Euler Equations</strong><br />
+Newton-Euler equations are an extension of Euler’s law of motions, which are in turn extensions of Newton’s law of motion. They are ways to represent the translations and rotations of a rigid body.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms/a*/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>So let’s start with Euler’s law of motion since Newton’s law of motion should be familiar to most science students. (not me, however).</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms/a*/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>First off, let’s begin with <strong>Euler’s first law</strong>.
+It states that the linear momentum of a body is equal to mass of the body times the velocity of the body’s center of the mass.<br />
+In order words:<br />
+p = mv<sub>cm</sub><br />
+where p is the linear momentum of a body, m is the mass of the body, v<sub>cm</sub> is the velocity of the body’s center of the mass.</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>Proceeding on to <strong>Euler’s second law</strong>.
+It states that the rate of change of the angular momentum at a point is equal to the sum of external moments of force acting on the body:<br />
+M = dL/dt</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p>Newton-Euler equations also make use of principal axes and moments.<br />
+<strong>Principal axis of inertia</strong><br />
+- a vector u is considered to be along a principal axis if Iu is parallel to u, where I is the inertia of the rigid body<br />
+<strong>Principal moment of inertia</strong><br />
+- moment of inertia with respect to a principle axis is called a principal moment of inertia</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p>That’s all the physics to read through for now. In the next post, we will be looking at how to combine these laws into Newton-Euler equations.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/matrices/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

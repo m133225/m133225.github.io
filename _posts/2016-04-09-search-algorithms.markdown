@@ -2,7 +2,7 @@
 layout: post
 title:  "Search algorithms in Motion Planning"
 date:   2016-04-09 20:30:00 +0800
-categories: algorithms, A*, JPS
+categories: algorithms A* JPS
 ---
 Maybe that was too much focus on the physics. Have to brush up on my physics before looking really in-depth into them. I shall study the algorithms side of it instead (which is the actual motion planning) :p
 

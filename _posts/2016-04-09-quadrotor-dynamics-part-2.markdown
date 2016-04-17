@@ -2,7 +2,7 @@
 layout: post
 title:  "Quadrotor, and its physics, PART 2"
 date:   2016-04-09 16:30:00 +0800
-categories: quadrotor, quadcopter
+categories: quadrotor quadcopter
 ---
 So what is the Newton-Euler equation and how does it apply to motion planning?
 

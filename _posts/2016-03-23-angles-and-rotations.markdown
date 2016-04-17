@@ -2,7 +2,7 @@
 layout: post
 title:  "Rotations, and how they are represented"
 date:   2016-03-23 11:49:00 +0800
-categories: matrices, rotations
+categories: matrices rotations
 ---
 So let's move on to rotations.
 <hr/>

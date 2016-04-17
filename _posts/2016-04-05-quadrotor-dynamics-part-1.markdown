@@ -2,7 +2,7 @@
 layout: post
 title:  "Quadrotor, and its physics, PART 1"
 date:   2016-04-05 20:30:00 +0800
-categories: quadrotor, quadcopter
+categories: quadrotor quadcopter
 ---
 
 Now that we have looked at basic representations of the 3D space, we can move on to something more complex: the physics of quadcopters.
