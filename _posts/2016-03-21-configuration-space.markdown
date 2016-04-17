@@ -17,7 +17,7 @@ Before beginning to go in-depth into the topic of motion planning itself, we wil
 
 Just some revision and definitions on 3D space before the real thing.  
 (This is covered in the transformation slides)
-***
+<hr/>
 
 Any **reference frame** in the 3D space can be defined using 3 orthogonal/basis vectors.
 
@@ -25,37 +25,41 @@ _Transformation_ usually refers to the relationship between 2 reference frames o
 _Displacement_ usually refers to the relationship between 2 reference frames of the SAME rigid body.
 
 So what is **rigid body displacement**?
+
 - Transformation `g` of all points of a body
 - Within the body itself:
- - any 2 points still have the same distance
- - any 2 vectors (formed by the 2 same points) will have the same cross product
+  - any 2 points still have the same distance
+  - any 2 vectors (formed by the 2 same points) will have the same cross product
 
 **Rotational matrices**  
 Rotational Matrix <sup>A</sup>R<sub>B</sub>
-  - Transform from points wrt frame B to points wrt frame A  
+
+- Transform from points wrt frame B to points wrt frame A  
 Note that this does not account for displacement between the frames, only the rotation
 
-Features of that we should take note:  
+Features of that we should take note:
+
 - the set of rotational matrices is a closed group (under multiplication)
- - product/inverse of a rotational matrix is another rotation matrix
+  - product/inverse of a rotational matrix is another rotation matrix
 - rotating the frame itself -> post-multiply
 - rotating a position -> pre-multiply
 
 **Transformations**
+
 - Homogenous
- - Represents a rigid body transformation
- - It is in the form  
+  - Represents a rigid body transformation
+  - It is in the form  
 [R d]  
 [0 1]  
 where R is the rotational matrix, and d is the displacement matrix
- - basically 'increasing' the dimension for multiplication
+  - basically 'increasing' the dimension for multiplication
 - Composite
- - left-to-right transformation in the current frame
- - right-to-left transformation in the original frame
+  - left-to-right transformation in the current frame
+  - right-to-left transformation in the original frame
 - Inverse  
- - It is in the form  
+  - It is in the form  
 [Rt -Rtd]  
 [0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 ]
-***
+<hr/>
 
 It seems like we will be another 3 topics related to the physics/math side of it, before we move on to the actual motion planning itself. So brace yourselves :D

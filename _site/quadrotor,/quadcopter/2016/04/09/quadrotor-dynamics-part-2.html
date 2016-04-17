@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Quadrotor, and its physics, PART 2</title>
+  <meta name="description" content="So what is the Newton-Euler equation and how does it apply to motion planning?">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,43 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Quadrotor, and its physics, PART 2</h1>
+    <p class="post-meta"><time datetime="2016-04-09T16:30:00+08:00" itemprop="datePublished">Apr 9, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>So what is the Newton-Euler equation and how does it apply to motion planning?</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p>It is a way of representing the <strong>surrounding forces and torques on a rigid body</strong>.
+When the center of mass is at the origin of the reference frame, we are able to represent them in the following form (consisting matrices):<br />
+(F)= (mI<sub>3</sub> 0 )(a<sub>cm</sub>) + (      0      )<br />
+(τ)    ( 0  I<sub>cm</sub>)( α )     (ω x I<sub>cm</sub>ω)</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>where <br />
+F is the force acting on the center of mass<br />
+τ is the torque acting about the center of mass<br />
+m is the mass of the rigid body<br />
+I<sub>cm</sub> is the moment of inertia about the center of mass<br />
+a<sub>cm</sub> is the acceleration of the center of mass
+α is the angular acceleration of the rigid body<br />
+ω is the angular velocity of the rigid body</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p><strong>Equilibrium</strong>
+We are particularly concerned with the equilibrium state for quadcopters (duh!). An equilibrium state can be:
+- Stable
+- Unstable
+- Critically stable</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>By using the following representations, we are able to calculate if a body is in equilibrium or not:
+- q, the configuration/position of the system
+- x, the state of the system</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Dealing with uncertainty</title>
+  <meta name="description" content="So far, we have discussed the basic idea behind motion planning.But the environment is constantly changing, and always has its uncertainty. How do we account...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,53 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Dealing with uncertainty</h1>
+    <p class="post-meta"><time datetime="2016-04-17T12:00:00+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>So far, we have discussed the basic idea behind motion planning.
+But the environment is constantly changing, and always has its uncertainty. How do we account these uncertainties into our planning?</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p>In general, we can model the movement of a robot in the following cycle:
+1. The robot moves. This increases the uncertainty of the environment.
+2. Using the movement (control input) in step 1, predict the new environment.
+3. Use sensors to gather information about the new environment
+4. Using the new information, update the model of the new environment, which reduces the uncertainty (then go back to (1))</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>Without covering on the different types of probability (that were covered in the slides), let’s move on directly to the solution: Bayes’ Filter, also known as <a href="https://en.wikipedia.org/wiki/Recursive_Bayesian_estimation">Recursive Bayesian estimation</a>.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<table>
+  <tbody>
+    <tr>
+      <td>Bayes’ Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment. i.e. P(x<sub>t</sub></td>
+      <td>z<sub>1:t</sub>, u<sub>1:t</sub>) where x<sub>t</sub> is the new environment.</td>
+    </tr>
+  </tbody>
+</table>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>If you would like a more detailed explanation with concrete examples, click <a href="http://people.ufpr.br/~danielsantos/ProbabilisticRobotics.pdf">here</a> and start from page 23!</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p>Another important assumption that we can make is that the Markov Property holds. In short, states are ‘atomic’ rather than ‘sequential’. Each state is conditionally independent on its previous states.</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p>Upon closer inspection, one should realise that this assumption is heavily flawed. There are many ways in which this assumption can be violated. For example, factors such as dynamics in the environment are not in the state representation. In this case, the probability model (and state) does not account for these uncertainties, and they will make the new state dependent on the old ones.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+<p>However the case, making this assumption actually works well in practice! Which is similar to how <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes classifier</a> works. These assumptions simplifies the problem and reduces the amount of computation required.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
+<hr />
 
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>We can then consolidate the above into a Transition Model.<br />
+Prediction = integral of p(x<sub>t</sub>|x<sub>t-1</sub>, u<sub>t</sub>) p(x<sub>t-1</sub>|z<sub>1:t-1</sub>, u<sub>1:t-1</sub>) wrt d<sub>x-1</sub></p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>We can then update the probability required for the next iteration:<br />
+p(x<sub>t</sub>|z<sub>1:t</sub>, u<sub>1:t</sub>) = g(z<sub>t</sub>|x<sub>t</sub>)p(x<sub>t</sub>|z<sub>1:t-1</sub>,u<sub>1:t</sub>)/integral(g(z<sub>t</sub>|x<sup>’</sup><sub>t</sub>)p(x<sup>’</sup><sub>t</sub>|z<sub>1:t-1</sub>,u<sub>1:t</sub>))d(x<sup>’</sup><sub>t</sub>)</p>
 
-</div>
+  </div>
+
+</article>
 
       </div>
     </div>

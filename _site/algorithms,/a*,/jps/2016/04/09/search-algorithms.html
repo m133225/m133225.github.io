@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Search algorithms in Motion Planning</title>
+  <meta name="description" content="Maybe that was too much focus on the physics. Have to brush up on my physics before looking really in-depth into them. I shall study the algorithms side of i...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,61 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Search algorithms in Motion Planning</h1>
+    <p class="post-meta"><time datetime="2016-04-09T20:30:00+08:00" itemprop="datePublished">Apr 9, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>Maybe that was too much focus on the physics. Have to brush up on my physics before looking really in-depth into them. I shall study the algorithms side of it instead (which is the actual motion planning) :p</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<hr />
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>Before even attempting to search, we have to <em>model</em> the environment somehow, so that the robot/algorithm knows which areas are to be avoided.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>Let us focus on the 2D problem for now (an agent moving in a maze)</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>So how do we model a 2D space?
+The main technique commonly used is <strong>cellular decomposition</strong>.
+In other words, break down the space into cells (or grids).
+Doing this will result in 3 types of cells:
+- Completely blocked
+  - Basically, obstacle occupied the whole cell
+- Partially blocked
+  - Cell is half-occupied by an obstacle
+- Empty
+  - No obstruction</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p>Completely blocked cells and empty cells are rather straight-forward: allow/disallow traversals.
+But what about partially blocked cells?
+There are pros and cons of the different ways of handling them.
+1. We make them traversable
+  - obviously, this may not work since there is an obstacle
+2. We make them not traversable
+  - this may lead to incomplete search</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p>Also, we can always increase the <em>resolution</em> of the grids i.e. decompose each cell into even smaller cells
+-&gt; but this requires additional memory and computation, which may not always be feasible.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+<p>Similar concepts can be applied to 3D space, where we can model the environment with 3-dimensional grids.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
+<p><strong>Note that when we model a 2D environment by grids, they are considered to be an 8-connected (if we allow diagonals) graph.</strong></p>
 
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>Now to the actual motion planning!<br />
+Which (real-time) grid-search algorithms can we use to find a path to the destination?</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>We can always rely on our old-school Breadth-First Search and Depth-First Search or even Dijkstra’s algorithm.
+A* search is still better (complete, optimal and fast to compute given good heuristics) than them, in particular, a variation named <strong>Jump Point Search</strong>.<br />
+It works similarly to A*, except that it avoids checking for symmetrical paths. The basic idea is that it ignores grid that can be reached by its parent node with a cheaper cost.<br />
+<a href="http://zerowidth.com/2013/05/05/jump-point-search-explained.html">Here</a> is an detailed explanation for JPS (with a customisable example!)</p>
 
-</div>
+<p>Note that it can perform more than 10x the speed of A*!</p>
+
+  </div>
+
+</article>
 
       </div>
     </div>

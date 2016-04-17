@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Motion Planning for Multi-robot</title>
+  <meta name="description" content="In the previous post, we only discussed about the search for a single-agent.Then what about planning for multi-agent robots? How do we make them work togethe...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,51 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Motion Planning for Multi-robot</h1>
+    <p class="post-meta"><time datetime="2016-04-16T20:00:00+08:00" itemprop="datePublished">Apr 16, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>In the previous post, we only discussed about the search for a single-agent.
+Then what about planning for multi-agent robots? How do we make them work together in an optimal way?</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p>Actually, we can simply reuse algorithms for single-agent in a multi-agent setting.
+For example, let’s consider planning for 2 robots (under the same multi-robot system).</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>We can take the <em>cartesian product</em> of both graphs, remove the collision states, then use A* to plan paths.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>While this is possible, the amount computation needed will increase exponentially, as the number of robots are increased.
+This is known as the Curse of Dimensionality.</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>Let’s look at a slightly different problem.
+Instead of trying to make Robot A move to goal A and Robot B move to goal B and so on, we allow the robots to move to any of the goal, as long as all goals are visited.
+We call this problem CAPT - Concurrent Assignment and Planning of Trajectories.
+However, there is the problem of intersecting paths, which may result in collision.</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p>There is a theorem to help us: Minimizing total distance will almost always result in non-intersecting paths.
+So basically, we can minimize total distance in order to get a set of paths.
+This is rather straight-forward: we emulate a table with the distance of each robot to the different goals. We then attempt to find an assignment such that it minimizes the total distance travelled. For this, we can use the <a href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian algorithm</a> which has a O(n<sup>3</sup>) running time.</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p>However, if we add in an assumption, we can ensure that it will result in non-intersecting paths.
+Assume that the distance between the starting points and the goal is &gt; 2 x R x sqrt(2)where R is the radius of the (circular) robot.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+<p>However, when we add in obstacles, the above assumption will not hold. With intersecting paths, we then have to determine the priority order.
+This can be done by checking if there will still be intersection between 2 robots if one of them does not move.
+- If there is still intersecting paths, then the one that did not move will have a higher priority.
+- If not, checking if there is still intersecting paths if the one that didn’t move now moves (and completes) its path first. If there is, then the other one will have higher priority.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
+<p>Let’s summarize the above in simple steps for multi-agent planning:
+1. Compute the shortest length paths (squared) from the robots to every goal
+2. Find the best assignment using Hungarian algorithm
+3. Determine the priority of intersecting paths.
+4. Even after delegating the paths to the robots, it is still up to the robots to optimize its own trajectory to ensure that its path is safe &amp; does not interfere with higher-priority robots.</p>
 
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
+  </div>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

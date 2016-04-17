@@ -6,35 +6,491 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Feb 2016 15:35:27 +0800</pubDate>
-    <lastBuildDate>Sun, 07 Feb 2016 15:35:27 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Apr 2016 14:28:16 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Apr 2016 14:28:16 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+        <title>Dealing with uncertainty</title>
+        <description>&lt;p&gt;So far, we have discussed the basic idea behind motion planning.
+But the environment is constantly changing, and always has its uncertainty. How do we account these uncertainties into our planning?&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;p&gt;In general, we can model the movement of a robot in the following cycle:
+1. The robot moves. This increases the uncertainty of the environment.
+2. Using the movement (control input) in step 1, predict the new environment.
+3. Use sensors to gather information about the new environment
+4. Using the new information, update the model of the new environment, which reduces the uncertainty (then go back to (1))&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;p&gt;Without covering on the different types of probability (that were covered in the slides), let’s move on directly to the solution: Bayes’ Filter, also known as &lt;a href=&quot;https://en.wikipedia.org/wiki/Recursive_Bayesian_estimation&quot;&gt;Recursive Bayesian estimation&lt;/a&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Bayes’ Filter simply adds on to the above model. It uses the known previous state, the latest control input and sensor information, to predict the new environment. i.e. P(x&lt;sub&gt;t&lt;/sub&gt;&lt;/td&gt;
+      &lt;td&gt;z&lt;sub&gt;1:t&lt;/sub&gt;, u&lt;sub&gt;1:t&lt;/sub&gt;) where x&lt;sub&gt;t&lt;/sub&gt; is the new environment.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you would like a more detailed explanation with concrete examples, click &lt;a href=&quot;http://people.ufpr.br/~danielsantos/ProbabilisticRobotics.pdf&quot;&gt;here&lt;/a&gt; and start from page 23!&lt;/p&gt;
 
+&lt;p&gt;Another important assumption that we can make is that the Markov Property holds. In short, states are ‘atomic’ rather than ‘sequential’. Each state is conditionally independent on its previous states.&lt;/p&gt;
+
+&lt;p&gt;Upon closer inspection, one should realise that this assumption is heavily flawed. There are many ways in which this assumption can be violated. For example, factors such as dynamics in the environment are not in the state representation. In this case, the probability model (and state) does not account for these uncertainties, and they will make the new state dependent on the old ones.&lt;/p&gt;
+
+&lt;p&gt;However the case, making this assumption actually works well in practice! Which is similar to how &lt;a href=&quot;https://en.wikipedia.org/wiki/Naive_Bayes_classifier&quot;&gt;Naive Bayes classifier&lt;/a&gt; works. These assumptions simplifies the problem and reduces the amount of computation required.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;We can then consolidate the above into a Transition Model.&lt;br /&gt;
+Prediction = integral of p(x&lt;sub&gt;t&lt;/sub&gt;|x&lt;sub&gt;t-1&lt;/sub&gt;, u&lt;sub&gt;t&lt;/sub&gt;) p(x&lt;sub&gt;t-1&lt;/sub&gt;|z&lt;sub&gt;1:t-1&lt;/sub&gt;, u&lt;sub&gt;1:t-1&lt;/sub&gt;) wrt d&lt;sub&gt;x-1&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;We can then update the probability required for the next iteration:&lt;br /&gt;
+p(x&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t&lt;/sub&gt;, u&lt;sub&gt;1:t&lt;/sub&gt;) = g(z&lt;sub&gt;t&lt;/sub&gt;|x&lt;sub&gt;t&lt;/sub&gt;)p(x&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t-1&lt;/sub&gt;,u&lt;sub&gt;1:t&lt;/sub&gt;)/integral(g(z&lt;sub&gt;t&lt;/sub&gt;|x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;)p(x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;|z&lt;sub&gt;1:t-1&lt;/sub&gt;,u&lt;sub&gt;1:t&lt;/sub&gt;))d(x&lt;sup&gt;’&lt;/sup&gt;&lt;sub&gt;t&lt;/sub&gt;)&lt;/p&gt;
 </description>
-        <pubDate>Thu, 14 Jan 2016 19:20:00 +0800</pubDate>
-        <link>/jekyll/update/2016/01/14/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">/jekyll/update/2016/01/14/welcome-to-jekyll.html</guid>
+        <pubDate>Sun, 17 Apr 2016 12:00:00 +0800</pubDate>
+        <link>/probability,/uncertainty/2016/04/17/handling-uncertainty.html</link>
+        <guid isPermaLink="true">/probability,/uncertainty/2016/04/17/handling-uncertainty.html</guid>
         
         
-        <category>jekyll</category>
+        <category>probability,</category>
         
-        <category>update</category>
+        <category>uncertainty</category>
+        
+      </item>
+    
+      <item>
+        <title>Motion Planning for Multi-robot</title>
+        <description>&lt;p&gt;In the previous post, we only discussed about the search for a single-agent.
+Then what about planning for multi-agent robots? How do we make them work together in an optimal way?&lt;/p&gt;
+
+&lt;p&gt;Actually, we can simply reuse algorithms for single-agent in a multi-agent setting.
+For example, let’s consider planning for 2 robots (under the same multi-robot system).&lt;/p&gt;
+
+&lt;p&gt;We can take the &lt;em&gt;cartesian product&lt;/em&gt; of both graphs, remove the collision states, then use A* to plan paths.&lt;/p&gt;
+
+&lt;p&gt;While this is possible, the amount computation needed will increase exponentially, as the number of robots are increased.
+This is known as the Curse of Dimensionality.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at a slightly different problem.
+Instead of trying to make Robot A move to goal A and Robot B move to goal B and so on, we allow the robots to move to any of the goal, as long as all goals are visited.
+We call this problem CAPT - Concurrent Assignment and Planning of Trajectories.
+However, there is the problem of intersecting paths, which may result in collision.&lt;/p&gt;
+
+&lt;p&gt;There is a theorem to help us: Minimizing total distance will almost always result in non-intersecting paths.
+So basically, we can minimize total distance in order to get a set of paths.
+This is rather straight-forward: we emulate a table with the distance of each robot to the different goals. We then attempt to find an assignment such that it minimizes the total distance travelled. For this, we can use the &lt;a href=&quot;https://en.wikipedia.org/wiki/Hungarian_algorithm&quot;&gt;Hungarian algorithm&lt;/a&gt; which has a O(n&lt;sup&gt;3&lt;/sup&gt;) running time.&lt;/p&gt;
+
+&lt;p&gt;However, if we add in an assumption, we can ensure that it will result in non-intersecting paths.
+Assume that the distance between the starting points and the goal is &amp;gt; 2 x R x sqrt(2)where R is the radius of the (circular) robot.&lt;/p&gt;
+
+&lt;p&gt;However, when we add in obstacles, the above assumption will not hold. With intersecting paths, we then have to determine the priority order.
+This can be done by checking if there will still be intersection between 2 robots if one of them does not move.
+- If there is still intersecting paths, then the one that did not move will have a higher priority.
+- If not, checking if there is still intersecting paths if the one that didn’t move now moves (and completes) its path first. If there is, then the other one will have higher priority.&lt;/p&gt;
+
+&lt;p&gt;Let’s summarize the above in simple steps for multi-agent planning:
+1. Compute the shortest length paths (squared) from the robots to every goal
+2. Find the best assignment using Hungarian algorithm
+3. Determine the priority of intersecting paths.
+4. Even after delegating the paths to the robots, it is still up to the robots to optimize its own trajectory to ensure that its path is safe &amp;amp; does not interfere with higher-priority robots.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Apr 2016 20:00:00 +0800</pubDate>
+        <link>/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html</link>
+        <guid isPermaLink="true">/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html</guid>
+        
+        
+        <category>algorithms,</category>
+        
+        <category>A*,</category>
+        
+        <category>multi-agent</category>
+        
+      </item>
+    
+      <item>
+        <title>Search algorithms in Motion Planning</title>
+        <description>&lt;p&gt;Maybe that was too much focus on the physics. Have to brush up on my physics before looking really in-depth into them. I shall study the algorithms side of it instead (which is the actual motion planning) :p&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Before even attempting to search, we have to &lt;em&gt;model&lt;/em&gt; the environment somehow, so that the robot/algorithm knows which areas are to be avoided.&lt;/p&gt;
+
+&lt;p&gt;Let us focus on the 2D problem for now (an agent moving in a maze)&lt;/p&gt;
+
+&lt;p&gt;So how do we model a 2D space?
+The main technique commonly used is &lt;strong&gt;cellular decomposition&lt;/strong&gt;.
+In other words, break down the space into cells (or grids).
+Doing this will result in 3 types of cells:
+- Completely blocked
+  - Basically, obstacle occupied the whole cell
+- Partially blocked
+  - Cell is half-occupied by an obstacle
+- Empty
+  - No obstruction&lt;/p&gt;
+
+&lt;p&gt;Completely blocked cells and empty cells are rather straight-forward: allow/disallow traversals.
+But what about partially blocked cells?
+There are pros and cons of the different ways of handling them.
+1. We make them traversable
+  - obviously, this may not work since there is an obstacle
+2. We make them not traversable
+  - this may lead to incomplete search&lt;/p&gt;
+
+&lt;p&gt;Also, we can always increase the &lt;em&gt;resolution&lt;/em&gt; of the grids i.e. decompose each cell into even smaller cells
+-&amp;gt; but this requires additional memory and computation, which may not always be feasible.&lt;/p&gt;
+
+&lt;p&gt;Similar concepts can be applied to 3D space, where we can model the environment with 3-dimensional grids.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note that when we model a 2D environment by grids, they are considered to be an 8-connected (if we allow diagonals) graph.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Now to the actual motion planning!&lt;br /&gt;
+Which (real-time) grid-search algorithms can we use to find a path to the destination?&lt;/p&gt;
+
+&lt;p&gt;We can always rely on our old-school Breadth-First Search and Depth-First Search or even Dijkstra’s algorithm.
+A* search is still better (complete, optimal and fast to compute given good heuristics) than them, in particular, a variation named &lt;strong&gt;Jump Point Search&lt;/strong&gt;.&lt;br /&gt;
+It works similarly to A*, except that it avoids checking for symmetrical paths. The basic idea is that it ignores grid that can be reached by its parent node with a cheaper cost.&lt;br /&gt;
+&lt;a href=&quot;http://zerowidth.com/2013/05/05/jump-point-search-explained.html&quot;&gt;Here&lt;/a&gt; is an detailed explanation for JPS (with a customisable example!)&lt;/p&gt;
+
+&lt;p&gt;Note that it can perform more than 10x the speed of A*!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 20:30:00 +0800</pubDate>
+        <link>/algorithms,/a*,/jps/2016/04/09/search-algorithms.html</link>
+        <guid isPermaLink="true">/algorithms,/a*,/jps/2016/04/09/search-algorithms.html</guid>
+        
+        
+        <category>algorithms,</category>
+        
+        <category>A*,</category>
+        
+        <category>JPS</category>
+        
+      </item>
+    
+      <item>
+        <title>Quadrotor, and its physics, PART 2</title>
+        <description>&lt;p&gt;So what is the Newton-Euler equation and how does it apply to motion planning?&lt;/p&gt;
+
+&lt;p&gt;It is a way of representing the &lt;strong&gt;surrounding forces and torques on a rigid body&lt;/strong&gt;.
+When the center of mass is at the origin of the reference frame, we are able to represent them in the following form (consisting matrices):&lt;br /&gt;
+(F)= (mI&lt;sub&gt;3&lt;/sub&gt; 0 )(a&lt;sub&gt;cm&lt;/sub&gt;) + (      0      )&lt;br /&gt;
+(τ)    ( 0  I&lt;sub&gt;cm&lt;/sub&gt;)( α )     (ω x I&lt;sub&gt;cm&lt;/sub&gt;ω)&lt;/p&gt;
+
+&lt;p&gt;where &lt;br /&gt;
+F is the force acting on the center of mass&lt;br /&gt;
+τ is the torque acting about the center of mass&lt;br /&gt;
+m is the mass of the rigid body&lt;br /&gt;
+I&lt;sub&gt;cm&lt;/sub&gt; is the moment of inertia about the center of mass&lt;br /&gt;
+a&lt;sub&gt;cm&lt;/sub&gt; is the acceleration of the center of mass
+α is the angular acceleration of the rigid body&lt;br /&gt;
+ω is the angular velocity of the rigid body&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Equilibrium&lt;/strong&gt;
+We are particularly concerned with the equilibrium state for quadcopters (duh!). An equilibrium state can be:
+- Stable
+- Unstable
+- Critically stable&lt;/p&gt;
+
+&lt;p&gt;By using the following representations, we are able to calculate if a body is in equilibrium or not:
+- q, the configuration/position of the system
+- x, the state of the system&lt;/p&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 16:30:00 +0800</pubDate>
+        <link>/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</link>
+        <guid isPermaLink="true">/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html</guid>
+        
+        
+        <category>quadrotor,</category>
+        
+        <category>quadcopter</category>
+        
+      </item>
+    
+      <item>
+        <title>Quadrotor, and its physics, PART 1</title>
+        <description>&lt;p&gt;Now that we have looked at basic representations of the 3D space, we can move on to something more complex: the physics of quadcopters.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Newton-Euler Equations&lt;/strong&gt;
+Newton-Euler equations are an extension of Euler’s law of motions, which are in turn extensions of Newton’s law of motion. They are ways to represent the translations and rotations of a rigid body.&lt;/p&gt;
+
+&lt;p&gt;So let’s start with Euler’s law of motion since Newton’s law of motion should be familiar to most science students. (not me, however).&lt;/p&gt;
+
+&lt;p&gt;First off, let’s begin with &lt;strong&gt;Euler’s first law&lt;/strong&gt;.
+It states that the linear momentum of a body is equal to mass of the body times the velocity of the body’s center of the mass.
+In order words:&lt;br /&gt;
+p = mv&lt;sub&gt;cm&lt;/sub&gt;&lt;br /&gt;
+where p is the linear momentum of a body, m is the mass of the body, v&lt;sub&gt;cm&lt;/sub&gt; is the velocity of the body’s center of the mass.&lt;/p&gt;
+
+&lt;p&gt;Proceeding on to &lt;strong&gt;Euler’s second law&lt;/strong&gt;.
+It states that the rate of change of the angular momentum at a point is equal to the sum of external moments of force acting on the body:&lt;br /&gt;
+M = dL/dt&lt;/p&gt;
+
+&lt;p&gt;Newton-Euler equations also make use of principal axes and moments.
+&lt;strong&gt;Principal axis of inertia&lt;/strong&gt;
+-&amp;gt; a vector u is considered to be along a principal axis if Iu is parallel to u, where I is the inertia of the rigid body&lt;br /&gt;
+&lt;strong&gt;Principal moment of inertia&lt;/strong&gt;
+-&amp;gt; moment of inertia with respect to a principle axis is called a principal moment of inertia&lt;/p&gt;
+
+&lt;p&gt;That’s all the physics to read through for now. In the next post, we will be looking at how to combine these laws into Newton-Euler equations.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 05 Apr 2016 20:30:00 +0800</pubDate>
+        <link>/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</link>
+        <guid isPermaLink="true">/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html</guid>
+        
+        
+        <category>quadrotor,</category>
+        
+        <category>quadcopter</category>
+        
+      </item>
+    
+      <item>
+        <title>Comparison processes between open-sourced projects</title>
+        <description>&lt;p&gt;Since open-sourced projects have different contributors and background, the workflow they have put in place are rather different. For example, open-sourced softwares which involve people without much software engineering experiences will tend to have less prominent process, and may tend to repel new contributors as they don’t know where or how to start.&lt;/p&gt;
+
+&lt;p&gt;In this post, I will be comparing the processes between my projects and extract out the good points.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;HubTurbo&lt;/strong&gt;&lt;br /&gt;
+&lt;em&gt;Setting up&lt;/em&gt;
+Setting up of HubTurbo is rather straight-forward.
+There are step-by-step instructions available in the repository.&lt;/p&gt;
+
+&lt;p&gt;However, if there are bugs, the new contributor might become helpless since he or she might not have the technological expertise to do it in the first place.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Contributing to HubTurbo&lt;/em&gt;
+1. First off, new contributors are required to submit a &lt;code class=&quot;highlighter-rouge&quot;&gt;forFirstTimers&lt;/code&gt; issue to make sure they know the basic contribution workflow. This usually involves 1-line changes (or even 1-word changes!).
+2. Contributors are usually free to choose their subsequent issues. However, they are usually recommended to avoid making new suggestions until they are familiar with several aspects of the project.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;
+HubTurbo has a rather flexible issue reporting workflow. Whenever a developer or an user has found an issue, he or she is free to create the issue. It is up to the developers to accept or reject the issue, but they are usually accepted as long as they are reasonable. Of course, it is still encouraged that the person who reports the issue to comprehensive;y address the issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;
+1. Before submitting PRs, HubTurbo encourages the contributor to read through the contribution guidelines, to make sure they know of the coding style &amp;amp; testing requirements.
+2. It is also usually a requirement that PRs do not decrease test coverage, unless there are valid reasons.
+3. During its active periods, there will be weekly releases, in addition to weekly meetings to discuss the problems encountered and the direction that HubTurbo should go towards. Each active member is also required to submit at least one PR for each release (preferably more).
+4. Due to the weekly releases, its developers are rather active, and PRs submitted will usually be attended to or reviewed quickly.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Atom&lt;/strong&gt;&lt;br /&gt;
+&lt;em&gt;Setting up&lt;/em&gt;
+Instruction for setting up atom may not be that obvious to a new contributor:
+Key instructions are found &lt;a href=&quot;http://flight-manual.atom.io/getting-started/sections/installing-atom/&quot;&gt;here&lt;/a&gt; instead of the contribution guidelines of the repository.&lt;/p&gt;
+
+&lt;p&gt;Moreover, since atom is modularized, the user may not know how to set-up the repository he wishes to contribute to.
+For example, the user wishes to contribute to the tree-view package but simply cloning it will not suffice. The user has to link the cloned repo to the main repo, so the main repo will include the package during its run. This is indicated &lt;a href=&quot;https://github.com/atom/atom/blob/master/docs/contributing-to-packages.md&quot;&gt;here&lt;/a&gt; which is not that obvious to a new user since it is not linked from anywhere.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Contributing to Atom&lt;/em&gt;
+It is rather similar to HubTurbo process in the aspect of coding styles guidelines (for CoffeeScript/Javascript/CSS).&lt;/p&gt;
+
+&lt;p&gt;There is a minor difference: While atom has &lt;code class=&quot;highlighter-rouge&quot;&gt;beginner&lt;/code&gt; issues, contributors are NOT required to submit a &lt;code class=&quot;highlighter-rouge&quot;&gt;beginner&lt;/code&gt; issue before going on to more complicated ones.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Reporting Issues&lt;/em&gt;
+Atom, however, has a good process for reporting issues. They have a structured checklist to minimize already-reported issues and encourages the users who report to include reproduction steps. Of course, this isn’t always possible.
+This checklist includes stuff like the OS information, atom version, whether the problem is reproducible in atom safe mode, whether the user has went through the existing list of issues, and so on.
+This is a process that may take up a significant time if a user wants to report an issue, which may in turn frustrate the user till he or she no longer wants to make an issue. While it may be so, it is still a good form of documentation so that contributors can ensure that they have a good overview of the problem. In addition, if the user ‘gives up’ reporting that easily, maybe he or she won’t make a comprehensive issue anyway :p&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Submitting Pull Requests&lt;/em&gt;
+1. Similarly to HubTurbo, atom encourages the contributor to read through the contribution guidelines.
+2. The only requirement before a PR can be merged is that it compiles on Travis/AppVeyor. Whether a PR decreases its test coverage does not matter, and is entirely up to the developer reviewing the PR.
+3. Unlike HubTurbo, it does not have scheduled releases. It is up to the developers to merge a couple of PRs, then ‘release’ them as a new minor version. (e.g. 1.7.0-beta2) The duration for a minor version ranges from a few hours to a few days.
+4. However, there are many lingering PRs that &lt;code class=&quot;highlighter-rouge&quot;&gt;needs-review&lt;/code&gt; but are not looked at even after the contributor has addressed the problems identified. (There are even 2 year-old PRs!) This could be due to the lack of developers, and they can only address problems that are of high priority.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 31 Mar 2016 12:00:00 +0800</pubDate>
+        <link>/process/2016/03/31/process-comparison.html</link>
+        <guid isPermaLink="true">/process/2016/03/31/process-comparison.html</guid>
+        
+        
+        <category>process</category>
+        
+      </item>
+    
+      <item>
+        <title>Rotations, and how they are represented</title>
+        <description>&lt;p&gt;So let’s move on to rotations.
+***
+There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also known as the &lt;em&gt;lie&lt;/em&gt; group.&lt;/p&gt;
+
+&lt;p&gt;There are several representations for these group of rotations which we will be discussing later on.&lt;/p&gt;
+
+&lt;p&gt;The SO(3) group satisfies 4 axioms: closure, associativity, identity and invertibility. In addition, it is also considered a continuous group since the binary operator is a continuous operation. It is also a &lt;em&gt;smooth manifold&lt;/em&gt;, which we will look into now.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Manifolds&lt;/strong&gt;&lt;br /&gt;
+So what are &lt;em&gt;smooth manifolds&lt;/em&gt;?&lt;br /&gt;
+First, let’s look at the ideas of &lt;em&gt;homeomorphism&lt;/em&gt; and &lt;em&gt;diffeomorphism&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Basically, &lt;em&gt;homeomorphism&lt;/em&gt; is a function that maps one topological space to another, with the following properties:
+- Bijection
+- f and f&lt;sup&gt;-1&lt;/sup&gt; are both continuous&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Diffeomorphism&lt;/em&gt;, on the other hand, is a function f, together with its inverse f&lt;sup&gt;-1&lt;/sup&gt;,
+- has all partial derivatives, of all orders
+- which all partial derivatives are continuous&lt;/p&gt;
+
+&lt;p&gt;So, then, a &lt;em&gt;manifold&lt;/em&gt; (of dimension n) is a set M which is homeomorphic to R&lt;sup&gt;n&lt;/sup&gt;.
+For it to be a &lt;em&gt;smooth manifold&lt;/em&gt;, it should ALSO be &lt;em&gt;locally diffeomorphic&lt;/em&gt; to R&lt;sup&gt;n&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Euler Angles&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Another way to represent a rotation is through the use of &lt;em&gt;Euler angles&lt;/em&gt;. Basically, any rotation in a 3D space can be represented as a combination of 3 rotations about linearly independent axes.
+The rotation of the y-axis should be between 0 or pi, unless the axes are not linearly independent in the first place.&lt;/p&gt;
+
+&lt;p&gt;While Euler angles are easy to understand, they have duplicate ways of representing the same rotation.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3D Rotation Matrices&lt;/strong&gt;&lt;br /&gt;
+The Euler’s Rotation Theorem&lt;br /&gt;
+- Displacement of rigid body such that one of its points remains fixed, is equivalent to a rotation&lt;/p&gt;
+
+&lt;p&gt;The proof is explained rather detailedly in &lt;a href=&quot;https://en.wikipedia.org/wiki/Euler%27s_rotation_theorem&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This theorem is essential in deriving the Rodrigue’s rotation formula, which helps us to combine the 3 axis-angle rotations without having to compute them explicitly (which is intensive).&lt;br /&gt;
+𝐑&lt;sub&gt;𝐮,𝜙&lt;/sub&gt; = 𝐈cos𝜙 + 𝐮𝐮&lt;sup&gt;𝑇&lt;/sup&gt;(1 − cos𝜙) +𝐮sin𝜙&lt;br /&gt;
+where u is the unit vector of the rotation axis, and 𝜙 is the angle rotated according to the right hand rule.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 23 Mar 2016 11:49:00 +0800</pubDate>
+        <link>/matrices,/rotations/2016/03/23/angles-and-rotations.html</link>
+        <guid isPermaLink="true">/matrices,/rotations/2016/03/23/angles-and-rotations.html</guid>
+        
+        
+        <category>matrices,</category>
+        
+        <category>rotations</category>
+        
+      </item>
+    
+      <item>
+        <title>Useful tools for manipulating space representations</title>
+        <description>&lt;p&gt;Just some additional background info (of me), I have learnt some Machine Learning algorithms, and am currently taking an
+Introduction to Artificial Intelligence module. With interest in Motion Planning and Robotics, this is an exploration
+of techniques outside the basic ones, so the pace might be slow :p&lt;/p&gt;
+
+&lt;p&gt;Moving on…&lt;/p&gt;
+
+&lt;p&gt;I have found a good &lt;a href=&quot;https://alliance.seas.upenn.edu/~meam620/wiki/index.php?n=Main.Schedule&quot;&gt;course materials&lt;/a&gt; for learning robotics. It seems to be very closely linked to motion planning.
+Over the next couple of weeks. I will be reading through these course materials and studying them in-depth.&lt;/p&gt;
+
+&lt;p&gt;Before beginning to go in-depth into the topic of motion planning itself, we will need to start with representing positions in the 3D space.&lt;/p&gt;
+
+&lt;p&gt;Just some revision and definitions on 3D space before the real thing.&lt;br /&gt;
+(This is covered in the transformation slides)&lt;/p&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;Any &lt;strong&gt;reference frame&lt;/strong&gt; in the 3D space can be defined using 3 orthogonal/basis vectors.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Transformation&lt;/em&gt; usually refers to the relationship between 2 reference frames of different rigid bodies.
+&lt;em&gt;Displacement&lt;/em&gt; usually refers to the relationship between 2 reference frames of the SAME rigid body.&lt;/p&gt;
+
+&lt;p&gt;So what is &lt;strong&gt;rigid body displacement&lt;/strong&gt;?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Transformation &lt;code class=&quot;highlighter-rouge&quot;&gt;g&lt;/code&gt; of all points of a body&lt;/li&gt;
+  &lt;li&gt;Within the body itself:
+    &lt;ul&gt;
+      &lt;li&gt;any 2 points still have the same distance&lt;/li&gt;
+      &lt;li&gt;any 2 vectors (formed by the 2 same points) will have the same cross product&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Rotational matrices&lt;/strong&gt;&lt;br /&gt;
+Rotational Matrix &lt;sup&gt;A&lt;/sup&gt;R&lt;sub&gt;B&lt;/sub&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Transform from points wrt frame B to points wrt frame A&lt;br /&gt;
+Note that this does not account for displacement between the frames, only the rotation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Features of that we should take note:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the set of rotational matrices is a closed group (under multiplication)
+    &lt;ul&gt;
+      &lt;li&gt;product/inverse of a rotational matrix is another rotation matrix&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;rotating the frame itself -&amp;gt; post-multiply&lt;/li&gt;
+  &lt;li&gt;rotating a position -&amp;gt; pre-multiply&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Transformations&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Homogenous
+    &lt;ul&gt;
+      &lt;li&gt;Represents a rigid body transformation&lt;/li&gt;
+      &lt;li&gt;It is in the form&lt;br /&gt;
+[R d]&lt;br /&gt;
+[0 1]&lt;br /&gt;
+where R is the rotational matrix, and d is the displacement matrix&lt;/li&gt;
+      &lt;li&gt;basically ‘increasing’ the dimension for multiplication&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Composite
+    &lt;ul&gt;
+      &lt;li&gt;left-to-right transformation in the current frame&lt;/li&gt;
+      &lt;li&gt;right-to-left transformation in the original frame&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Inverse
+    &lt;ul&gt;
+      &lt;li&gt;It is in the form&lt;br /&gt;
+[Rt -Rtd]&lt;br /&gt;
+[0       1 ]&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;It seems like we will be another 3 topics related to the physics/math side of it, before we move on to the actual motion planning itself. So brace yourselves :D&lt;/p&gt;
+</description>
+        <pubDate>Mon, 21 Mar 2016 01:00:00 +0800</pubDate>
+        <link>/matrices,/transformations/2016/03/21/configuration-space.html</link>
+        <guid isPermaLink="true">/matrices,/transformations/2016/03/21/configuration-space.html</guid>
+        
+        
+        <category>matrices,</category>
+        
+        <category>transformations</category>
+        
+      </item>
+    
+      <item>
+        <title>Motion Planning in AI</title>
+        <description>&lt;p&gt;In the uprising trend of Artificial Intelligence, automated agents have become one of the key focus.
+Driverless cars, automated farming, and even AI in computer games are examples of such automated agents.&lt;/p&gt;
+
+&lt;p&gt;The key question lies:
+How do these automated agents plan its motion in the midst of the ever-changing environment?&lt;/p&gt;
+
+&lt;p&gt;In order to do so, there is a need to understand the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;How can the environment be modeled
+    &lt;ul&gt;
+      &lt;li&gt;needs to be efficient (real-time computation)&lt;/li&gt;
+      &lt;li&gt;accuracy of its representation&lt;/li&gt;
+      &lt;li&gt;dependent on actuators?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;What search algorithms are used
+    &lt;ul&gt;
+      &lt;li&gt;needs to be efficient&lt;/li&gt;
+      &lt;li&gt;completeness, optimality&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;What are the capabilities of existing technology
+    &lt;ul&gt;
+      &lt;li&gt;State-of-the-art algorithms in driverless cars, computer AI, etc&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;At the very end of this exploration, models/algorithms/techniques learnt will be used in a mini-project (some sort of game AI? :p).&lt;/p&gt;
+</description>
+        <pubDate>Mon, 29 Feb 2016 10:05:00 +0800</pubDate>
+        <link>/introduction/2016/02/29/motion-planning-in-ai.html</link>
+        <guid isPermaLink="true">/introduction/2016/02/29/motion-planning-in-ai.html</guid>
+        
+        
+        <category>introduction</category>
         
       </item>
     

@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Rotations, and how they are represented</title>
+  <meta name="description" content="So let’s move on to rotations.***There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also kno...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,57 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Rotations, and how they are represented</h1>
+    <p class="post-meta"><time datetime="2016-03-23T11:49:00+08:00" itemprop="datePublished">Mar 23, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>So let’s move on to rotations.
+***
+There is a group of rotations, called Special Orthogonal group SO(n) where n is the dimension of the issue. This is also known as the <em>lie</em> group.</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p>There are several representations for these group of rotations which we will be discussing later on.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>The SO(3) group satisfies 4 axioms: closure, associativity, identity and invertibility. In addition, it is also considered a continuous group since the binary operator is a continuous operation. It is also a <em>smooth manifold</em>, which we will look into now.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p><strong>Manifolds</strong><br />
+So what are <em>smooth manifolds</em>?<br />
+First, let’s look at the ideas of <em>homeomorphism</em> and <em>diffeomorphism</em>.</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>Basically, <em>homeomorphism</em> is a function that maps one topological space to another, with the following properties:
+- Bijection
+- f and f<sup>-1</sup> are both continuous</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p><em>Diffeomorphism</em>, on the other hand, is a function f, together with its inverse f<sup>-1</sup>,
+- has all partial derivatives, of all orders
+- which all partial derivatives are continuous</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p>So, then, a <em>manifold</em> (of dimension n) is a set M which is homeomorphic to R<sup>n</sup>.
+For it to be a <em>smooth manifold</em>, it should ALSO be <em>locally diffeomorphic</em> to R<sup>n</sup></p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+<p><strong>Euler Angles</strong></p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
+<p>Another way to represent a rotation is through the use of <em>Euler angles</em>. Basically, any rotation in a 3D space can be represented as a combination of 3 rotations about linearly independent axes.
+The rotation of the y-axis should be between 0 or pi, unless the axes are not linearly independent in the first place.</p>
 
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>While Euler angles are easy to understand, they have duplicate ways of representing the same rotation.</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p><strong>3D Rotation Matrices</strong><br />
+The Euler’s Rotation Theorem<br />
+- Displacement of rigid body such that one of its points remains fixed, is equivalent to a rotation</p>
 
-</div>
+<p>The proof is explained rather detailedly in <a href="https://en.wikipedia.org/wiki/Euler%27s_rotation_theorem">Wikipedia</a></p>
+
+<p>This theorem is essential in deriving the Rodrigue’s rotation formula, which helps us to combine the 3 axis-angle rotations without having to compute them explicitly (which is intensive).<br />
+𝐑<sub>𝐮,𝜙</sub> = 𝐈cos𝜙 + 𝐮𝐮<sup>𝑇</sup>(1 − cos𝜙) +𝐮sin𝜙<br />
+where u is the unit vector of the rotation axis, and 𝜙 is the angle rotated according to the right hand rule.</p>
+
+  </div>
+
+</article>
 
       </div>
     </div>

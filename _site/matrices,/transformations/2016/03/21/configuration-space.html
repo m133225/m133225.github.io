@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>m133225's journey in HubTurbo</title>
-  <meta name="description" content="CS3281 Blog for HubTurbo
-">
+  <title>Useful tools for manipulating space representations</title>
+  <meta name="description" content="Just some additional background info (of me), I have learnt some Machine Learning algorithms, and am currently taking anIntroduction to Artificial Intelligen...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/matrices,/transformations/2016/03/21/configuration-space.html">
   <link rel="alternate" type="application/rss+xml" title="m133225's journey in HubTurbo" href="/feed.xml">
 </head>
 
@@ -55,89 +54,100 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Useful tools for manipulating space representations</h1>
+    <p class="post-meta"><time datetime="2016-03-21T01:00:00+08:00" itemprop="datePublished">Mar 21, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 17, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>Just some additional background info (of me), I have learnt some Machine Learning algorithms, and am currently taking an
+Introduction to Artificial Intelligence module. With interest in Motion Planning and Robotics, this is an exploration
+of techniques outside the basic ones, so the pace might be slow :p</p>
 
-        <h2>
-          <a class="post-link" href="/probability,/uncertainty/2016/04/17/handling-uncertainty.html">Dealing with uncertainty</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 16, 2016</span>
+<p>Moving on…</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/multi-agent/2016/04/16/multi-robot-planning.html">Motion Planning for Multi-robot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>I have found a good <a href="https://alliance.seas.upenn.edu/~meam620/wiki/index.php?n=Main.Schedule">course materials</a> for learning robotics. It seems to be very closely linked to motion planning.
+Over the next couple of weeks. I will be reading through these course materials and studying them in-depth.</p>
 
-        <h2>
-          <a class="post-link" href="/algorithms,/a*,/jps/2016/04/09/search-algorithms.html">Search algorithms in Motion Planning</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>Before beginning to go in-depth into the topic of motion planning itself, we will need to start with representing positions in the 3D space.</p>
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/09/quadrotor-dynamics-part-2.html">Quadrotor, and its physics, PART 2</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2016</span>
+<p>Just some revision and definitions on 3D space before the real thing.<br />
+(This is covered in the transformation slides)</p>
+<hr />
 
-        <h2>
-          <a class="post-link" href="/quadrotor,/quadcopter/2016/04/05/quadrotor-dynamics-part-1.html">Quadrotor, and its physics, PART 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 31, 2016</span>
+<p>Any <strong>reference frame</strong> in the 3D space can be defined using 3 orthogonal/basis vectors.</p>
 
-        <h2>
-          <a class="post-link" href="/process/2016/03/31/process-comparison.html">Comparison processes between open-sourced projects</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 23, 2016</span>
+<p><em>Transformation</em> usually refers to the relationship between 2 reference frames of different rigid bodies.
+<em>Displacement</em> usually refers to the relationship between 2 reference frames of the SAME rigid body.</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/rotations/2016/03/23/angles-and-rotations.html">Rotations, and how they are represented</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 21, 2016</span>
+<p>So what is <strong>rigid body displacement</strong>?</p>
 
-        <h2>
-          <a class="post-link" href="/matrices,/transformations/2016/03/21/configuration-space.html">Useful tools for manipulating space representations</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 29, 2016</span>
+<ul>
+  <li>Transformation <code class="highlighter-rouge">g</code> of all points of a body</li>
+  <li>Within the body itself:
+    <ul>
+      <li>any 2 points still have the same distance</li>
+      <li>any 2 vectors (formed by the 2 same points) will have the same cross product</li>
+    </ul>
+  </li>
+</ul>
 
-        <h2>
-          <a class="post-link" href="/introduction/2016/02/29/motion-planning-in-ai.html">Motion Planning in AI</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p><strong>Rotational matrices</strong><br />
+Rotational Matrix <sup>A</sup>R<sub>B</sub></p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<ul>
+  <li>Transform from points wrt frame B to points wrt frame A<br />
+Note that this does not account for displacement between the frames, only the rotation</li>
+</ul>
 
-</div>
+<p>Features of that we should take note:</p>
+
+<ul>
+  <li>the set of rotational matrices is a closed group (under multiplication)
+    <ul>
+      <li>product/inverse of a rotational matrix is another rotation matrix</li>
+    </ul>
+  </li>
+  <li>rotating the frame itself -&gt; post-multiply</li>
+  <li>rotating a position -&gt; pre-multiply</li>
+</ul>
+
+<p><strong>Transformations</strong></p>
+
+<ul>
+  <li>Homogenous
+    <ul>
+      <li>Represents a rigid body transformation</li>
+      <li>It is in the form<br />
+[R d]<br />
+[0 1]<br />
+where R is the rotational matrix, and d is the displacement matrix</li>
+      <li>basically ‘increasing’ the dimension for multiplication</li>
+    </ul>
+  </li>
+  <li>Composite
+    <ul>
+      <li>left-to-right transformation in the current frame</li>
+      <li>right-to-left transformation in the original frame</li>
+    </ul>
+  </li>
+  <li>Inverse
+    <ul>
+      <li>It is in the form<br />
+[Rt -Rtd]<br />
+[0       1 ]</li>
+    </ul>
+  </li>
+</ul>
+<hr />
+
+<p>It seems like we will be another 3 topics related to the physics/math side of it, before we move on to the actual motion planning itself. So brace yourselves :D</p>
+
+  </div>
+
+</article>
 
       </div>
     </div>
