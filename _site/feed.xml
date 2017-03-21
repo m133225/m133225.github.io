@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>m133225&#39;s blog</title>
-    <description>Blog about technology that I am interested in, mainly related to AI and working in open-sourced projects.
+    <title>m133225 site</title>
+    <description>Blog about technology that I am interested in, mainly related to AI/Robotics and working in open-sourced projects.
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Apr 2016 15:15:49 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Apr 2016 15:15:49 +0800</lastBuildDate>
+    <pubDate>Tue, 21 Mar 2017 12:12:11 +0800</pubDate>
+    <lastBuildDate>Tue, 21 Mar 2017 12:12:11 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
